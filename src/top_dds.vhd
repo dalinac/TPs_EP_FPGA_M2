@@ -9,8 +9,7 @@ entity top_dds is
 port (
 	adc_clk_p_i, adc_clk_n_i : in std_logic; 
 	SW : in std_logic_vector(3 downto 0);
-	GPIO : in std_logic_vector(3 downto 0)
-	);
+	GPIO : in std_logic_vector(3 downto 0);
 	led_o : out std_logic_vector(7 downto 0);           
 	--DAC signals
 	dac_clk_o : out std_logic;
@@ -60,6 +59,10 @@ begin
 	generic map (N => 10)
 	port map (clk => clk125, W => W_s, offset => (others => '0'), s => s_dds);
 	
+	dac_clk_o <= not clk125;
+	dac_wrt_o <= dac_clk_o;
+	dac_rst_o <= '0';
+	dac_sel_o <= '0';      -- sortie OUT1
 	
 	process
 	begin

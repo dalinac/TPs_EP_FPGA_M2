@@ -43,7 +43,7 @@ begin
 		    clk     => clkt,
 		    W 	    => Wt, 
 		    offset  => offsett, 
-		    s       => st, 
+		    s       => st
         );
         
         clk_process : process 

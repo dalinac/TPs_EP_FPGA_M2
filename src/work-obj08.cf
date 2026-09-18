@@ -1,0 +1,7 @@
+v 4
+file . "tb_dds.vhd" "d99a2d9bfa273de6db70c70f01f29f827c2b1fe5" "20260918141245.449":
+  entity tb_dds at 8( 326) + 0 on 13;
+  architecture sim of tb_dds at 16( 427) + 0 on 14;
+file . "dds.vhdl" "26370c6ea19d751cb35753f34c92f92dfdf4127b" "20260918141245.453":
+  entity dds at 6( 194) + 0 on 15;
+  architecture a of dds at 23( 609) + 0 on 16;
