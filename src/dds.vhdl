@@ -36,7 +36,7 @@ phase_acc_register:
 process(clk) begin 
 	if rising_edge(clk) then 
 		phase_acc <= phase_acc + unsigned(W);
-		addr <= phase_acc(N-1 downto N-10);
+		addr <= phase_acc(N-1 downto N-10) + unsigned(offset);
 	end if;
 end process;
 
