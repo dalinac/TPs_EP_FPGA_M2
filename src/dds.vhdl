@@ -110,7 +110,7 @@ end process;
 phase_to_signal:
 process(clk) begin
 	if rising_edge(clk) then
-		sinus <= RAM(to_integer(addr));
+		sinus <= std_logic_vector(to_unsigned(RAM(to_integer(addr)), 14));
 	end if;
 	s <= sinus;
 end process;
