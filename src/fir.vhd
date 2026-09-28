@@ -44,12 +44,12 @@ end process;
 comp_sum:
 process(clk) begin
 	if rising_edge(clk) then
-		sum <= (
+		sum <= shift_right(
 		       sr(0)*coefs(0) + 
 		       sr(1)*coefs(1) + 
 		       sr(2)*coefs(2) + 
 		       sr(3)*coefs(3)
-	       );
+	       , 8);
 	end if;
 	data_o <= std_logic_vector(sum);
 end process;
