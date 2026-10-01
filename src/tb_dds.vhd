@@ -56,9 +56,9 @@ begin
 
 	test : process 
 	begin 
-
+	
 	Wt <= v10(1);
-	wait for 2*1024*CLK_PERIOD;
+	wait for 1024*CLK_PERIOD;
 
 	Wt <= v10(10);
 	wait for 2 us;
