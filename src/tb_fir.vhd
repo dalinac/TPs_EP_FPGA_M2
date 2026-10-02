@@ -21,8 +21,6 @@ architecture sim of tb_fir is
 		b0 : integer := 18;
 		b1 : integer := 123;
 		b2 : integer := 230;
-		b3 : integer := 123;
-		b4 : integer := 18;
 		NF : integer := 9
 		);
 

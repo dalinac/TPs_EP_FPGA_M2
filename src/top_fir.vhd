@@ -40,8 +40,6 @@ component fir is
 	b0 : integer := 18;
 	b1 : integer := 123;
 	b2 : integer := 230;
-	b3 : integer := 123;
-	b4 : integer := 18;
 	NF : integer := 9
 	);
 	port (
@@ -78,7 +76,7 @@ begin
 	x_u <= (not dat_a_reg(13)) & dat_a_reg(12 downto 0);
 
 	u_fir : fir
-	generic map (W => 14, b0 => 18, b1 => 123, b2 => 230, b3 => 123, b4 => 18, NF => 9)
+	generic map (W => 14, b0 => 18, b1 => 123, b2 => 230, NF => 9)
 	port map (clk => clk125, ena => aclk, data_i => x_u, data_o => y_u);
 
 -- non signe -> complement a 2 pour le DAC (operation symetrique)
