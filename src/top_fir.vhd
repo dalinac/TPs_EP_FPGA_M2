@@ -65,7 +65,7 @@ signal clk125, clk_nobuf_s : std_logic;
 signal aclk : std_logic;                             -- validation a fs = 125/8 MHz
 signal dat_a_reg, dat_b_reg : std_logic_vector(13 downto 0);
 signal x_u, y_u : std_logic_vector(13 downto 0);     -- entree / sortie du filtre
-signal y_dac : std_logic_vector(13 downto 0);        -- sortie remise au format DAC
+
 
 begin
 
@@ -79,10 +79,6 @@ begin
 	generic map (W => 14, b0 => 18, b1 => 123, b2 => 230, NF => 9)
 	port map (clk => clk125, ena => aclk, data_i => x_u, data_o => y_u);
 
--- non signe -> complement a 2 pour le DAC (operation symetrique)
-	y_dac <= (not y_u(13)) & y_u(12 downto 0);
-
-sequencement:
 process
 begin
 	wait until rising_edge(clk125);
@@ -93,56 +89,56 @@ begin
 			dac_wrt_o <= '0';
 			dac_clk_o <= '0';
 			dac_sel_o <= '1';
-			dac_dat_o <= dat_a_reg;   -- voie B (OUT2) : entree non filtree
+			dac_dat_o <= x_u;   -- voie B (OUT2) : entree non filtree
 		WHEN 1 =>
 			div <= 2;
 			aclk <= '1';
 			dac_wrt_o <= '1';
 			dac_clk_o <= '1';
 			dac_sel_o <= '1';
-			dac_dat_o <= dat_a_reg;
+			dac_dat_o <= x_u;
 		WHEN 2 =>
 			div <= 3;
 			aclk <= '0';
 			dac_wrt_o <= '1';
 			dac_clk_o <= '1';
 			dac_sel_o <= '1';
-			dac_dat_o <= dat_a_reg;
+			dac_dat_o <= x_u;
 		WHEN 3 =>
 			div <= 4;
 			aclk <= '0';
 			dac_wrt_o <= '0';
 			dac_clk_o <= '0';
 			dac_sel_o <= '1';
-			dac_dat_o <= dat_a_reg;
+			dac_dat_o <= x_u;
 		WHEN 4 =>
 			div <= 5;
 			aclk <= '0';
 			dac_wrt_o <= '0';
 			dac_clk_o <= '0';
 			dac_sel_o <= '0';
-			dac_dat_o <= y_dac;       -- voie A (OUT1) : signal filtre
+			dac_dat_o <= y_u;       -- voie A (OUT1) : signal filtre
 		WHEN 5 =>
 			div <= 6;
 			aclk <= '0';
 			dac_wrt_o <= '1';
 			dac_clk_o <= '1';
 			dac_sel_o <= '0';
-			dac_dat_o <= y_dac;
+			dac_dat_o <= y_u;
 		WHEN 6 =>
 			div <= 7;
 			aclk <= '0';
 			dac_wrt_o <= '1';
 			dac_clk_o <= '1';
 			dac_sel_o <= '0';
-			dac_dat_o <= y_dac;
+			dac_dat_o <= y_u;
 		WHEN OTHERS =>
 			div <= 0;
 			aclk <= '0';
 			dac_wrt_o <= '0';
 			dac_clk_o <= '0';
 			dac_sel_o <= '0';
-			dac_dat_o <= y_dac;
+			dac_dat_o <= y_u;
 		END CASE;
 
 		if (aclk = '1') then	--else latch
