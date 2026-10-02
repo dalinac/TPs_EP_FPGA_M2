@@ -13,9 +13,7 @@ entity fir is
 	b0 : integer := 0;
 	b1 : integer := 0;
 	b2 : integer := 0;
-	b3 : integer := 0;
-	b4 : integer := 0;
-	NF : integer := 8
+	NF : integer := 9
 	);
 
 	port (
@@ -53,11 +51,9 @@ comp_sum:
 process(clk) begin
 	if rising_edge(clk) then
 		sum <= shift_right(
-		       sr(0)*b0 + 
-		       sr(1)*b1 + 
-		       sr(2)*b2 + 
-		       sr(3)*b3 +
-		       sr(4)*b4
+		       (sr(0) + sr(4))*b0 + 
+		       (sr(1) + sr(3))*b1 + 
+		       sr(2)*b2
 		       , NF)(13 downto 0);
 	end if;
 	data_o <= std_logic_vector(sum);
