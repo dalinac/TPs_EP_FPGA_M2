@@ -59,7 +59,7 @@ process(clk) begin
 	end if;
 end process;
 
-data_o <= std_logic_vector(sum(W-1 downto 0));
+data_o <= std_logic_vector(sum);
 
 end architecture;
 
