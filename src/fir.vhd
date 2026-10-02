@@ -48,14 +48,21 @@ process(clk) begin
 	end if;
 end process;
 
+signal p0, p1, p2 : unsigned(2*W+1 downto 0);
+
+comp_prod:
+process(clk) begin
+	if rising_edge(clk) then
+		p0 <= (resize(sr(0), W+1) + resize(sr(4), W+1))*b0;
+		p1 <= (resize(sr(1), W+1) + resize(sr(3), W+1))*b1;
+		p2 <= resize(sr(2), W+1)*b2;
+	end if;
+end process;
+
 comp_sum:
 process(clk) begin
 	if rising_edge(clk) then
-		sum <= shift_right(
-		       (resize(sr(0), W+1) + resize(sr(4), W+1))*b0 + 
-			       (resize(sr(1), W+1) + resize(sr(3), W+1))*b1 + 
-			       resize(sr(2), W+1)*b2
-			       , NF)(13 downto 0) ;
+		sum <= shift_right(p0 + p1 + p2, NF)(13 downto 0) ;
 	end if;
 end process;
 

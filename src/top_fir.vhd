@@ -73,7 +73,8 @@ begin
 	clk_inst: BUFG PORT MAP(I=>clk_nobuf_s, O=>clk125);
 
 -- complement a 2 -> non signe (inverser le MSb revient a ajouter 8192)
-	x_u <= (not dat_a_reg(13)) & dat_a_reg(12 downto 0);
+	-- x_u <= (not dat_a_reg(13)) & dat_a_reg(12 downto 0);
+	x_u <= dat_a_reg;
 
 	u_fir : fir
 	generic map (W => 14, b0 => 18, b1 => 123, b2 => 230, NF => 9)
@@ -89,28 +90,28 @@ begin
 			dac_wrt_o <= '0';
 			dac_clk_o <= '0';
 			dac_sel_o <= '1';
-			dac_dat_o <= x_u;   -- voie B (OUT2) : entree non filtree
+			dac_dat_o <= dat_a_reg;   -- voie B (OUT2) : entree non filtree
 		WHEN 1 =>
 			div <= 2;
 			aclk <= '1';
 			dac_wrt_o <= '1';
 			dac_clk_o <= '1';
 			dac_sel_o <= '1';
-			dac_dat_o <= x_u;
+			dac_dat_o <= dat_a_reg;
 		WHEN 2 =>
 			div <= 3;
 			aclk <= '0';
 			dac_wrt_o <= '1';
 			dac_clk_o <= '1';
 			dac_sel_o <= '1';
-			dac_dat_o <= x_u;
+			dac_dat_o <= dat_a_reg;
 		WHEN 3 =>
 			div <= 4;
 			aclk <= '0';
 			dac_wrt_o <= '0';
 			dac_clk_o <= '0';
 			dac_sel_o <= '1';
-			dac_dat_o <= x_u;
+			dac_dat_o <= dat_a_reg;
 		WHEN 4 =>
 			div <= 5;
 			aclk <= '0';
