@@ -14,7 +14,8 @@ entity fir is
 	b1 : integer := 0;
 	b2 : integer := 0;
 	b3 : integer := 0;
-	b4 : integer := 0
+	b4 : integer := 0;
+	NF : integer := 8
 	);
 
 	port (
@@ -57,7 +58,7 @@ process(clk) begin
 		       sr(2)*b2 + 
 		       sr(3)*b3 +
 		       sr(4)*b4
-		       , 8)(13 downto 0);
+		       , NF)(13 downto 0);
 	end if;
 	data_o <= std_logic_vector(sum);
 end process;
