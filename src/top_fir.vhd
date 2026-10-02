@@ -1,15 +1,7 @@
 -- top_fir.vhdl : encapsulation du filtre passe-bas pour la red pitaya (openXC7)
--- But : IN1 -> filtre -> OUT1, et IN1 recopie brut sur OUT2 pour comparer
---       l'entree et la sortie directement a l'oscilloscope (mesure du gain)
--- Sequencement du DAC repris de ADC_DAC.vhd : la machine d'etats sur 8 cycles
--- fournit aclk (= '1' un cycle sur 8, soit fs = 15,625 MHz) qui sert de
--- validation au filtre, et pilote dac_clk_o / dac_wrt_o / dac_sel_o en mode
--- entrelace (etats 0 a 3 : voie B, etats 4 a 7 : voie A) comme le AD9767
--- Format : l'ADC code +1 V par 0 et -1 V par 2**14-1 en complement a 2 (bit 13
--- = signe). Le filtre travaille en non signe : sans conversion, le bit 13
--- bascule a chaque passage par 0 V et on voit un sinus tronque avec des
--- morceaux decales. Inverser le MSb fait passer du complement a 2 au binaire
--- decale (cela revient a ajouter 8192), a l'entree et a la sortie du filtre.
+-- Sequencement du DAC repris de ADC_DAC.vhd : aclk ('1' un cycle sur 8) sert de
+-- validation au filtre a fs = 15,625 MHz
+
 
 
 library ieee;
@@ -72,8 +64,6 @@ begin
 	clk_inst0: IBUFDS PORT MAP(I=>adc_clk_p_i, IB=>adc_clk_n_i, O=>clk_nobuf_s);
 	clk_inst: BUFG PORT MAP(I=>clk_nobuf_s, O=>clk125);
 
--- complement a 2 -> non signe (inverser le MSb revient a ajouter 8192)
-	-- x_u <= (not dat_a_reg(13)) & dat_a_reg(12 downto 0);
 	x_u <= dat_a_reg;
 
 	u_fir : fir

@@ -32,6 +32,7 @@ type fir_state_t is array (0 to 4) of unsigned(13 downto 0);
 
 signal sr: fir_state_t;
 signal sum: unsigned(13 downto 0);
+signal p0, p1, p2 : unsigned(2*W+1 downto 0);
 
 begin 
 
@@ -47,8 +48,6 @@ process(clk) begin
 		end if;
 	end if;
 end process;
-
-signal p0, p1, p2 : unsigned(2*W+1 downto 0);
 
 comp_prod:
 process(clk) begin
