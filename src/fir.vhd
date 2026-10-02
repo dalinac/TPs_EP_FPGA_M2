@@ -29,9 +29,7 @@ architecture a of fir is
 
 
 type fir_state_t is array (0 to 4) of unsigned(13 downto 0);
-type fir_coefs_t is array (0 to 4) of unsigned(7 downto 0);
 
-constant coefs: fir_coefs_t := (b0, b1, b2, b3, b4);
 signal sr: fir_state_t;
 signal sum: unsigned(13 downto 0);
 
@@ -54,11 +52,11 @@ comp_sum:
 process(clk) begin
 	if rising_edge(clk) then
 		sum <= shift_right(
-		       sr(0)*coefs(0) + 
-		       sr(1)*coefs(1) + 
-		       sr(2)*coefs(2) + 
-		       sr(3)*coefs(3) +
-		       sr(4)*coefs(4)
+		       sr(0)*b0 + 
+		       sr(1)*b1 + 
+		       sr(2)*b2 + 
+		       sr(3)*b3 +
+		       sr(4)*b4
 	       , 8);
 	end if;
 	data_o <= std_logic_vector(sum);
