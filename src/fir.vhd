@@ -9,11 +9,17 @@ use ieee.numeric_std.all;
 
 entity fir is
 	generic (
-	W : integer := 14
+	W : integer := 14;
+	b0 : integer := 0;
+	b1 : integer := 0;
+	b2 : integer := 0;
+	b3 : integer := 0;
+	b4 : integer := 0
 	);
 
 	port (
 	clk : in std_logic; -- horloge maitre (15.625MHz)
+	ena : in std_logic;
 	data_i : in std_logic_vector(W-1 downto 0);
 	data_o : out std_logic_vector(W-1 downto 0)
 	);
@@ -22,10 +28,10 @@ end fir;
 architecture a of fir is 
 
 
-type fir_state_t is array (0 to 3) of unsigned(13 downto 0);
-type fir_coefs_t is array (0 to 3) of unsigned(7 downto 0);
+type fir_state_t is array (0 to 4) of unsigned(13 downto 0);
+type fir_coefs_t is array (0 to 4) of unsigned(7 downto 0);
 
-constant coefs: fir_coefs_t := (x"0c", x"74", x"74", x"0c");
+constant coefs: fir_coefs_t := (b0, b1, b2, b3, b4);
 signal sr: fir_state_t;
 signal sum: unsigned(13 downto 0);
 
@@ -34,10 +40,13 @@ begin
 shift_register: 
 process(clk) begin 
 	if rising_edge(clk) then
-		sr(0) <= unsigned(data_i); 
-		sr(1) <= sr(0);
-		sr(2) <= sr(1);
-		sr(3) <= sr(2);
+		if ena then
+			sr(0) <= unsigned(data_i); 
+			sr(1) <= sr(0);
+			sr(2) <= sr(1);
+			sr(3) <= sr(2);
+			sr(4) <= sr(3);
+		end if;
 	end if;
 end process;
 
@@ -48,7 +57,8 @@ process(clk) begin
 		       sr(0)*coefs(0) + 
 		       sr(1)*coefs(1) + 
 		       sr(2)*coefs(2) + 
-		       sr(3)*coefs(3)
+		       sr(3)*coefs(3) +
+		       sr(4)*coefs(4)
 	       , 8);
 	end if;
 	data_o <= std_logic_vector(sum);
