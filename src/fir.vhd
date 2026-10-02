@@ -57,7 +57,7 @@ process(clk) begin
 		       sr(2)*b2 + 
 		       sr(3)*b3 +
 		       sr(4)*b4
-	       , 8);
+		       , 8)(13 downto 0);
 	end if;
 	data_o <= std_logic_vector(sum);
 end process;
