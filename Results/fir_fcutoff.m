@@ -1,7 +1,8 @@
 pkg load signal
 fs = 125e6/8;
-fc = 0.5e6; % coupure demandee a -6 dB
-b = fir1(4, fc/(fs/2), 'low')
+fc1 = 2e6;
+fc2 = 2.5e6;
+b = fir1(30, [fc1 fc2]/(fs/2), 'bandpass')
 sum(b)
 freqz(b) % Bode : relever la frequence a -6 dB
 
