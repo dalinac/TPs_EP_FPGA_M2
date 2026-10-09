@@ -108,33 +108,33 @@ begin
 			dac_wrt_o <= '0';
 			dac_clk_o <= '0';
 			dac_sel_o <= '0';
-			dac_dat_o <= y_u;       -- voie A (OUT1) : signal filtre
+			dac_dat_o <= dat_b_reg;       -- voie A (OUT1) : signal filtre
 		WHEN 5 =>
 			div <= 6;
 			aclk <= '0';
 			dac_wrt_o <= '1';
 			dac_clk_o <= '1';
 			dac_sel_o <= '0';
-			dac_dat_o <= y_u;
+			dac_dat_o <= dat_b_reg;
 		WHEN 6 =>
 			div <= 7;
 			aclk <= '0';
 			dac_wrt_o <= '1';
 			dac_clk_o <= '1';
 			dac_sel_o <= '0';
-			dac_dat_o <= y_u;
+			dac_dat_o <= dat_b_reg;
 		WHEN OTHERS =>
 			div <= 0;
 			aclk <= '0';
 			dac_wrt_o <= '0';
 			dac_clk_o <= '0';
 			dac_sel_o <= '0';
-			dac_dat_o <= y_u;
+			dac_dat_o <= dat_b_reg;
 		END CASE;
 
 		if (aclk = '1') then	--else latch
 			dat_a_reg <= adc_dat_a_i;
-			dat_b_reg <= adc_dat_b_i;
+			dat_b_reg <= y_u;
 		else
 			dat_a_reg <= dat_a_reg;
 			dat_b_reg <= dat_b_reg;
