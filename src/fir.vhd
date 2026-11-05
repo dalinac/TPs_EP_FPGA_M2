@@ -1,8 +1,4 @@
 -- fir.vhdl : filtre RIF (FIR) passe-bas d'ordre 4
--- But : calculer y(n) = somme(b_i * x(n-i)) / 2**NF avec des coefficients entiers
--- Structure repliee du cours : le filtre etant symetrique (b4=b0, b3=b1), on additionne d'abord les echantillons de meme coefficient, ce qui ramene le nombre de multiplieurs de 5 a 3
-
-
 
 library ieee;
 use ieee.std_logic_1164.all;
@@ -36,33 +32,26 @@ signal p0, p1, p2 : unsigned(2*W+1 downto 0);
 
 begin 
 
-shift_register: 
-process(clk) begin 
-	if rising_edge(clk) then
-		if ena = '1' then
-			sr(0) <= unsigned(data_i); 
-			sr(1) <= sr(0);
-			sr(2) <= sr(1);
-			sr(3) <= sr(2);
-			sr(4) <= sr(3);
-		end if;
-	end if;
-end process;
 
-comp_prod:
-process(clk) begin
-	if rising_edge(clk) then
-		p0 <= (resize(sr(0), W+1) + resize(sr(4), W+1))*b0;
-		p1 <= (resize(sr(1), W+1) + resize(sr(3), W+1))*b1;
-		p2 <= resize(sr(2), W+1)*b2;
-	end if;
-end process;
+process begin
+	wait until rising_edge(clk);
 
-comp_sum:
-process(clk) begin
-	if rising_edge(clk) then
-		sum <= shift_right(p0 + p1 + p2, NF)(13 downto 0) ;
+	-- ligne a retard : avance d'un echantillon quand ena = '1'
+	if ena = '1' then
+		sr(0) <= unsigned(data_i); 
+		sr(1) <= sr(0);
+		sr(2) <= sr(1);
+		sr(3) <= sr(2);
+		sr(4) <= sr(3);
 	end if;
+
+	-- produits (structure repliee)
+	p0 <= (resize(sr(0), W+1) + resize(sr(4), W+1))*b0;
+	p1 <= (resize(sr(1), W+1) + resize(sr(3), W+1))*b1;
+	p2 <= resize(sr(2), W+1)*b2;
+
+	-- somme et division par 2**NF
+	sum <= shift_right(p0 + p1 + p2, NF)(13 downto 0);
 end process;
 
 data_o <= std_logic_vector(sum);
