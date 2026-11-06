@@ -67,24 +67,24 @@ with SW(3 downto 2) select
 
 led <= mot(7 downto 0) when SW(3) = '0' else mot(15 downto 8);
 
--- decodage 7 segments (segment allume a '1')
+-- decodage 7 segments (afficheur allume a '0')
 with quartet select
-	seg <= "0111111" when x"0",
-	       "0000110" when x"1",
-	       "1011011" when x"2",
-	       "1001111" when x"3",
-	       "1100110" when x"4",
-	       "1101101" when x"5",
-	       "1111101" when x"6",
-	       "0000111" when x"7",
-	       "1111111" when x"8",
-	       "1101111" when x"9",
-	       "1110111" when x"A",
-	       "1111100" when x"B",
-	       "0111001" when x"C",
-	       "1011110" when x"D",
-	       "1111001" when x"E",
-	       "1110001" when others;
+	seg <= "1000000" when x"0",
+	       "1111001" when x"1",
+	       "0100100" when x"2",
+	       "0110000" when x"3",
+	       "0011001" when x"4",
+	       "0010010" when x"5",
+	       "0000010" when x"6",
+	       "1111000" when x"7",
+	       "0000000" when x"8",
+	       "0010000" when x"9",
+	       "0001000" when x"A",
+	       "0000011" when x"B",
+	       "1000110" when x"C",
+	       "0100001" when x"D",
+	       "0000110" when x"E",
+	       "0001110" when others;
 
 u_tx : spi_tx
 	generic map (tscale => 20, N => 16)
